@@ -1,0 +1,145 @@
+<style>
+ h1 {
+		width: 850px;
+		margin: 0 auto;
+	}
+
+	.small input {
+		width: 40px;
+		display: inline-block;
+	}
+
+	.small {
+		display: inline-block;
+	}
+
+	.input-sm{
+		width: 30px;
+	}
+
+	#container {
+		font-family: 'Roboto Slab', serif;
+	}
+
+	#products{ 
+		width: 90%;
+		margin: 10px auto;
+	}
+
+	.entry {
+		border: 1px solid black;
+		border-radius: 7px;
+		background-color: white;
+		width: 250px;
+		height: 360px;
+		margin: 15px;
+		display: inline-block;
+		vertical-align: top;
+	}
+
+	#b_update{
+		width: 200px;
+		height: 75px;
+		margin: 10px auto;
+	}
+
+	#btn_product{
+		float: right;
+	}
+/*	.error{
+		font-size: 80%;
+	}*/
+
+
+</style>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/css/normalize.css"/>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/css/foundation.css"/>
+<link rel="stylesheet" href="style.css"/>
+<script type="text/javascript">
+
+	$(document).ready(function () {
+	    $("#buttonProduct").click(function(){
+	    	$("#formProduct").modal('show');
+	    });
+
+	});
+
+</script>
+	<div id='container' ng-controller='productsController'>
+		| <a href='#/seller'>Your order tickets</a>
+
+		<div id='products'>
+			<h1>Kitchen</h1> 
+			<div id='btn_product'>
+			<button data-toggle='modal' data-target='#formProduct' id='buttonProduct'>Add a product</button>
+			</div>
+			<!-- modal form -->
+	
+			<div id="formProduct" class="modal fade">
+    		<div class="modal-dialog modal-sm">
+        	<div class="modal-content">
+            <div class="modal-header">
+            	<button type="button" class="close" data-dismiss="modal">x</button>
+                <h3 class="modal-title">New Item</h3>
+            </div>
+            <div class="modal-body">
+               <form name='formProduct'>
+
+               <span style="color:red" ng-show="formProduct.item.$dirty && formProduct.item.$invalid">
+            	<span ng-show="formProduct.item.$error.required" class='error'>Item name is required.</span>
+            	<span ng-show="formProduct.item.$error.minlength" class='error'>Item name must be at least 5 characters.</span>
+                </span>        
+				<strong>Item: </strong><input type='text' name='item' ng-model='newProduct.product' ng-minlength='5' required>
+				
+				<div class='small'>
+         		<span style="color:red" ng-show="formProduct.price.$dirty && formProduct.price.$invalid">
+            	<span ng-show="formProduct.price.$error.required" class='error'>Price is required.</span>
+             	</span> 	
+				<strong>Price ($): </strong><br>
+				<input type='number' name='price' ng-model='newProduct.price' class='input-sm' min='1' required>
+				</div>
+
+				<div class='small'>
+				<span style="color:red" ng-show="formProduct.serving.$dirty && formProduct.serving.$invalid">
+            	<span ng-show="formProduct.serving.$error.required" class='error'>Serving size is required.</span>
+            	</span>
+				<strong>Serving Size: </strong><br><input type='text' name='serving' ng-model='newProduct.serving' class='input-sm'>
+				</div>
+
+				<span style="color:red" ng-show="formProduct.info.$dirty && formProduct.info.$invalid">
+            	<span ng-show="formProduct.info.$error.required" class='error'>Description is required.</span>
+            	<span ng-show="formProduct.info.$error.minlength" class='error'>Description must be at least 12 characters.</span>
+            	</span> 	
+				<strong>Description: </strong>
+				<textarea name='info' ng-model='newProduct.description' ng-minlength='12' required></textarea>
+
+				<strong>Ingredients: </strong><textarea ng-model='newProduct.ingredients'></textarea>							
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click='productAdd(newProduct)'>Submit</button>
+            </div>
+          	</form>
+       		 </div>
+   			 </div>
+			</div>
+
+
+
+<!-- 	<ul class="product-list small-block-grid-3">	 -->
+			<div class='entry' ng-repeat='product in products'>
+				<figure>
+					<img width='180px' height='180px' src={{product.url}}>
+				<figcaption>
+					<p>{{product.product}}</p>
+					<p>$ {{product.price}}</p>
+					<a href='#updateProduct/{{product._id}}'>
+						<button class='b_update'>Edit</button></a>
+				</figcaption>
+				</figure>
+			</div>
+			
+<!-- </ul> -->
+		</div>
+
+	</div>

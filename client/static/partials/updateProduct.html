@@ -1,0 +1,100 @@
+
+<style>
+body {
+	background-color: #006699;
+}
+form{
+	/*width: 20%;*/
+	border: 1px solid white;
+	padding: 15px;
+}
+img {
+	display: inline-block;
+	border-radius: 10px;
+	margin-right: 50px;
+}
+/*form {
+	display: inline-block;
+}*/
+#image {
+	display: inline-block;
+	width: 400px;
+	vertical-align: top;
+	margin-top: 5px;
+	background-color: white;
+	border-radius: 10px;
+	height: 300px;
+	/*margin-top: 20px;*/
+}
+#update {
+	margin: 0 auto;
+	width: 800px;
+}
+button {
+	margin-top: 10px;
+	margin-left: 190px;
+}
+h3 {
+	margin-bottom: 20px;
+}
+a{
+	font-size: 14px;
+	color: grey;
+}
+</style>
+
+<div ng-controller='productsController'>
+	<div id='update'>
+	<h3>Update you product details | <a ng-href='#seller'>Kitchen</a></h3>
+<img src='{{updateProduct.url}}' width='300px' height='300px'>
+<div id='image'>
+<form>
+	<table>
+	<!-- 	<col width='200'>
+		<col width='200'> -->
+	<tr>
+		<th>Product: </th>
+		<td><input type='text' ng-model='updateProduct.product'></td>
+	</tr>
+	<tr>
+		<th>Price: </th>
+		<td><input type='number' ng-model='updateProduct.price'></td>
+	</tr>
+	<tr>
+		<th>Serving: </td>
+		<td><input type='text' ng-model='updateProduct.serving'></td>
+	</tr>
+	<tr>
+		<th>Ingredients: </th>
+		<td><input type='text' ng-model='updateProduct.ingredients'></td>
+	</tr>
+	<tr>
+		<th>Description: </th>
+		<td><textarea ng-model='updateProduct.description'></textarea></td>
+	</tr>
+	</table>
+	<a ng-href='#seller' ng-click='editProduct(updateProduct._id)'>
+	<button>Cook</button></a>
+	
+</form>
+<!-- <form action='/imgUpload' method='post' enctype='multipart/form-data'>
+	<input type='hidden' name='productId' value={{updateProduct._id}}>
+	<input type='file' name='pic' size='40' accept="application/x-zip-compressed,image/*">
+	<input type='submit' value='Update Image' ng-click='redirect()'>
+</form> -->
+
+<form ng-upload method='post' action='/imgUpload' enctype='multipart/form-data'>
+	<fieldset>
+		<input type='hidden' name='productId' value={{updateProduct._id}}>
+		Attach Image: <input type='file' name='file' size='40' accept="application/x-zip-compressed,image/*">
+	</fieldset>
+	<input type='submit' value='Save Image' ng-click='redirect()'>
+</form>
+</div>
+
+
+
+
+</div>
+</div>
+

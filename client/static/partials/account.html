@@ -1,0 +1,245 @@
+<style>
+#nav_profile{
+	margin: 20px;
+	margin-left: 80px;
+	width: 500px;
+}
+
+.btn_tab{
+	width: 200px;
+}
+#profile{
+	margin: auto;
+	width: 85%;
+/*	background: blue;*/
+}
+
+.smallInfo{
+	display: inline-block;
+	vertical-align: top;
+	margin: 15px;
+	border: 3px solid #0099FF;
+	width: 47%;
+	padding: 5px;
+	height: 400px;
+	overflow: auto;
+	/*background-color: red;*/
+}
+
+.smallInfo h3{
+	text-align: center;
+}
+#historyOrder{
+	width: 70%;
+	margin: 0 auto;
+	text-align: center;
+}
+#filter{
+	margin: 15px;
+}
+#historyOrder table{
+	text-align: center;
+	margin: auto;
+}
+
+#historyOrder tr,td, th{
+	padding: 5px;
+	border: 2px solid black;
+	text-align: center;
+	height: 40px;
+	width: 120px;
+}
+
+#tableInfo td{
+	width: 220px;
+}
+
+#formInfo, #form_password{
+	width: 100%;
+	display: inline-block;
+	vertical-align: top;
+}
+#form_container{
+	width: 72%;
+	margin-left: 10px;
+	display: inline-block;
+	vertical-align: top;
+}
+#btns{
+	width: 25%;
+	display: inline-block;
+	vertical-align: top;
+}
+#update_btns{
+	margin-top: 30px;
+	display: inline-block;
+}
+
+#listFavorites{
+	width: 75%;
+	display: inline-block;
+	margin-left: 15px;
+}
+
+#list_ctrl{
+	display: inline-block;
+	width:15%;
+	margin-left: 15px;
+	vertical-align: top;
+}
+
+#btn_rm{
+	margin-left: 50px;
+}
+
+.btn_action{
+	width: 60px;
+	margin-left: 20px;
+}
+
+.itemSelect{
+	background: lightgrey;
+}
+#error_acct{
+	color: red;
+	text-align: center;
+}
+#msg_acct{
+	color: green;
+	text-align: center;
+}
+</style>
+
+<div ng-controller='usersController'>
+	<div id='nav_profile'>
+	<button ng-click='switchInfo(0)' class='btn_tab'>Profile</button>
+	<button ng-click='switchInfo(1)' class='btn_tab'>Order History</button>
+	</div>
+
+	<div id='profile' ng-show='profile' >
+		<div id='favorites' class='smallInfo'>
+			<h3>Favorites</h3>
+		<!-- 	{{user.favorites}} -->
+			<table id='listFavorites'>
+			    <col width='15%'>
+				<tr ng-repeat='item in user.favorites' ng-click='itemlistEdit($index)' ng-class="{ 'itemSelect' : $index == indexList }">
+					<td><a ng-href='#/productDetail/{{item._id}}'>{{item.product}}</a></td>
+				<tr>
+			</table>
+			<div id='list_ctrl'>
+				<button class='btn_action' ng-click='listEdit()' ng-show='!editActive'>Edit</button>
+				<button class='btn_action' ng-click='listEdit()' ng-show='editActive'>Close</button>
+				<button class='btn_action' ng-click='listSave()' ng-show='editActive'>Save</button>
+				<br>
+				<br>
+				<button ng-click='listUp()' ng-show='editActive'>&#8679</button>
+				<br>
+				<button id='btn_rm' ng-click='listRm()' ng-show='editActive'>&#9747</button>
+				<br>
+				<button ng-click='listDwn()' ng-show='editActive'>&#8681</button>			
+			</div>
+		</div>
+		<div id="account" class='smallInfo'>
+			<h3>Account Information</h3>
+
+			<br>
+			<p id='error_acct'>{{error}}</p>
+			<p id='msg_acct'>{{message}}</p>
+			<div id='form_container'>
+				<form id='formInfo' ng-show='!chng'>
+				<table id='tableInfo'>
+					<tr>
+						<th>First Name: </th>
+						<td>
+							<span ng-bind="user.first_name" ng-show="!edit"></span>
+							<input type='text' ng-model='user.first_name' ng-show="edit" >
+						</td>
+					</tr>
+					<tr>
+						<th>Last Name: </th>
+						<td>
+							<span ng-bind="user.last_name" ng-show="!edit"></span>
+							<input type='text' ng-model='user.last_name' ng-show="edit" >
+						</td>
+					</tr>
+					<tr>
+						<th>Email: </th>
+						<td>
+							<span ng-bind="user.email" ng-show="!edit"></span>
+							<input type='email' ng-model='user.email' ng-show="edit" >
+						</td>
+					</tr>
+				</table>
+				</form>	
+
+				<form id='form_password' ng-show='chng'>
+				<table id='tableInfo'>
+					<tr>
+						<th>Old Password: </th>
+						<td>
+				    		<input type='password' ng-model='pass.password'>
+						</td>
+					</tr>
+					<tr>
+						<th>New Password: </th>
+						<td>
+							<input type='password' ng-model='pass.passnew'>
+						</td>
+					</tr>
+					<tr>
+						<th>New Password (confirmation)</th>
+						<td>
+							<input type='password' ng-model='pass.passconf'>
+						</td>
+					</tr>
+				</table>
+				</form>	
+			</div>
+			<div id='btns'>
+				<div id='ctrl_btns'>
+				<a href ng-show="!edit" ng-click='editAcct()'>Edit Account</a>
+				<br>
+				<a href ng-show="!chng" ng-click='chngPass()'>Change Password</a>
+				</div>
+				<div id='update_btns'>
+				<a href ng-show="edit" ng-click='editAcct()'>Close Form</a>
+				<a href ng-show="chng" ng-click='chngPass()'>Close Form</a>
+				<br>
+				<button ng-show="edit" ng-click='updateAcct(user)'>Update!</button>
+				<button ng-show="chng" ng-click='updatePass(pass)'>Update!</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id='historyOrder' ng-show='historyOrder' >
+		<h3>Recent Orders</h3>
+		<div id='filter'>
+		Search Orders: <input type='text' ng-model='filter_name'>
+		</div>
+			<table>
+				    <col width='15%'>
+    				<col width='40%'>
+    				<col width='12%'>
+   					<col width='10%'>
+   					<col width='10%'>
+				<tr>
+					<th>Order Date</th>
+					<th>Item</th>
+					<th>Quantity</th>
+					<th>Total($)</th>
+					<th>Status</th>
+				</tr>
+				<tr ng-repeat='order in user.orders' | filter: filter_name>
+					{{order}}
+					<td>{{order.dateOrdered | date: "MMM dd, yyyy"}}</td>
+					<td><a ng-href='#/productDetail/{{order.item._id}}'>{{order.item.product}}</a></td>
+					<td>{{order.quantity}}</td>
+					<td>{{order.total}}</td>
+					<td>{{order.status}}</td>
+				</tr>
+			</table>
+	</div>
+
+
+</div>

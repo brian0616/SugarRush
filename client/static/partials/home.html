@@ -1,0 +1,197 @@
+<style type="text/css">
+  body{ 
+    background: url(http://www.browneyedbaker.com/wp-content/uploads/2011/06/homemade-snickers-1-550.jpg) no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  button {
+    margin: auto 0;
+    font-family: 'Poiret One', cursive;
+
+  }
+  #buttons {
+  text-align: center;
+  margin-top: 5%;
+  background: black;
+  padding: 100px;
+  opacity: 0.7;
+
+  }
+  .btn {
+    height: 100px;
+    width: 200px;
+    font-size: 25px;
+  }
+  #space {
+    height: 1px;
+    width: 150px;
+    display: inline-block;
+  }
+  /*.form-group.last { margin-bottom:0px; }*/
+  #reg_container {
+    height: 280px;
+    margin: auto;
+  }
+
+  #reg_container input{
+    margin: 2px auto;
+    padding: 5px;
+  }
+  .modal-content {
+  /*  height: 10px;*/
+  }
+  h1 {
+    text-align: center;
+    margin-top: 200px;
+    font-size: 200px;
+    font-family: 'Poiret One', cursive;
+    color: white;
+    font-weight: bold;
+    color: white;
+  }
+
+  #linkreg { cursor: pointer }
+  #linkreg:hover { 
+    text-decoration:none;
+    color: #0099FF;
+  }
+
+  #formLogin{
+    margin: auto;
+    width: 80%
+  }
+
+  #formLogin input{
+    margin: 12px;
+  }
+
+  #div_btn button{ 
+   margin: 20px; 
+   width: 180px;
+ }
+  #div_btn{
+    margin: auto;
+ }
+ .msg_error{
+   color: red;
+   text-align: center;
+ }
+#regbody{
+  height:500px;
+}
+#login_main{
+  position: absolute;
+  top: 25%;
+}
+   </style>
+
+
+
+  <!-- Large modal -->
+<div ng-controller='usersController'>
+  <body>
+
+    <h1>Sugar <i>RUSH</i></h1>
+  <!-- Seller Login / Registration -->
+  <div id='buttons'>
+  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login_main">
+    >>>
+  </button>
+  <p id='space' ng-repeat = 'error in errors'>
+      {{error}}  
+  </p>
+  </div>
+
+    <!-- User Login -->
+  <div class="modal fade" id="login_main" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Login | <a id='linkreg' data-dismiss="modal" data-toggle="modal" data-target="#registration">Register</a></h4>
+       
+        </div>
+        <div class="modal-body">
+            <form id='formLogin' class='form-inline'>
+              <p class='msg_error'>{{error}}</p>
+              <input type="text" ng-model="login.email" class="form-control" placeholder="Email">
+              <input type="password" ng-model="login.password" class="form-control"  placeholder="Password">
+              <br>
+              <div id='div_btn'>
+                <button type="button" data-backdrop='false' class="btnn btn-primary" ng-click='userLogin(login)'>Sugar Junkie</button>
+                <span id='span_login'></span>
+                <button type="button" data-dismiss='modal' data-backdrop='false' class="btnn btn-primary" ng-click='chefLogin(login)'>Patissier</button>  
+              </div>       
+        </div>
+        <div class="modal-footer">
+              <button type="button" class="btnn btn-default" data-dismiss="modal">Close</button>
+        
+        </div>
+            </form>
+       
+        </div>
+      </div>
+    </div>
+
+  <!-- registration Modal -->
+  <div class="modal fade" id="registration" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"> <a id='linkreg' data-dismiss="modal" data-toggle="modal" data-target="#login_main">Login</a> | Register</h4>
+        </div>
+        <div class="modal-body" id='regbody'>
+          <div id="reg_container"> 
+             <p>{{message}}</p>  
+            <form name='registerUser' novalidate>
+
+            <span style="color:red" ng-show="registerUser.last_name.$dirty && registerUser.last_name.$invalid">
+            <span ng-show="registerUser.email.$error.required">Email is required.</span>
+            </span>
+            <span ng-show="registerUser.email.$error.email">Invalid email address.</span>
+            <input type="text" name='email' ng-model="userNew.email" class="form-control" placeholder="Email" required><br>
+
+
+            <span style="color:red" ng-show="(registerUser.first_name.$dirty && registerUser.first_name.$invalid) || message">
+            <span ng-show="registerUser.first_name.$error.required">First name is required.</span>
+            <span ng-show="registerUser.first_name.$error.minlength">First name must be at least 2 characters.</span>
+            </span>
+            <input type="text" name='first_name' ng-model="userNew.first_name" class="form-control" placeholder="First Name" ng-minlength="2" required><br>
+
+            <span style="color:red" ng-show="registerUser.last_name.$dirty && registerUser.last_name.$invalid">
+            <span ng-show="registerUser.last_name.$error.required">Last name is required.</span>
+            <span ng-show="registerUser.last_name.$error.minlength">Last name must be at least 2 characters.</span>
+            </span>
+            <input type="text" name='last_name' ng-model="userNew.last_name" class="form-control" placeholder="Last Name" ng-minlength="2" required><br>
+            
+            <span style="color:red" ng-show="registerUser.password.$dirty && registerUser.password.$invalid">
+            <span ng-show="registerUser.password.$error.required" class="form-control">Password is required.</span>
+            </span>
+            <input type="password" ng-model="userNew.password" class="form-control" placeholder="Password" required><br>
+
+
+            <span style="color:red" ng-show="registerUser.passconf.$dirty && registerUser.passconf.$invalid">
+            <span ng-show="registerUser.passconf.$error.required">Confirmation is required.</span>
+            </span>
+            <input type="password" ng-model="userNew.passconf" class="form-control" placeholder="Confirmation" required><br>
+
+            <input type='phone' ng-model='userNew.phone' class="form-control" placeholder="123-456-7891">
+            </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btnn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" data-target="#login_main" data-backdrop='false' class="btnn btn-primary" ng-click='userAdd(userNew)' ng-disabled="registerUser.$invalid">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</div>
+

@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.0/css/normalize.css"/>
+<link rel="stylesheet" href="style.css"/>
+<style type="text/css">
+	body {
+		background-color: #1E90FF;
+		font-family: 'Roboto Slab', serif;
+	}
+	#seller_navbar {
+		margin: 10px auto;
+		width: 440px;
+		display: inline-block;
+		border: 1px solid black;
+		border-radius: 7px;
+		background-color: white;
+		padding: 20px;
+		margin-top: 30px;
+	}
+	textarea {
+		height: 200px;
+	}
+	#products{
+		display: inline-block;
+		vertical-align: top;
+		width: 40%;
+
+		margin-top: 40px;
+	}
+	#body_content {
+		width: 85%;
+		margin: 0 auto;
+		/*margin-left: 30px;*/
+		margin-top: 20px;
+	}
+	table{
+		background: lightgrey;
+	}
+
+	table, h1 {
+		width: 900px;
+		margin: 0 auto;
+	}
+	th, td{
+		text-align: center;
+		border: 2px solid black;
+	}
+
+	#search_filter{
+		margin: 15px;
+		margin-left: 180px;
+		width:500px;
+	}
+
+	a{
+		color: white;
+	}
+	a:hover{
+		text-decoration: none;
+		color: lightgrey;
+	}
+
+	caption{
+		color: black;
+	}
+</style>
+<div id='container' ng-controller='productsController'>
+	<a href='#/kitchen'>Go to Kitchen</a>
+		<h1> Welcome Chef</h1>
+	   <div id='search_filter'>
+         Search by Item: <input type='text' ng-model=  'filter_product'>
+    	</div>
+		<table>
+		<caption>Please remember to update status changes</caption>
+		<col width='15%'>
+		<col width='15%'>
+		<col width='25%'>
+		<col width='10%'>
+		<col width='10%'>
+		<col width='20%'>
+		<thead>
+			<th>Date Ordered</th>
+			<th>Customer</th>
+			<th>Item</th>
+			<th>Quantity</th>
+			<th>Total</th>
+			<th>Status</th>
+		</thead>
+		<tr ng-repeat="order in orders | filter: filter_product | orderBy: ['status', 'dateOrdered' ]">
+			<td>{{order.dateOrdered | date: YYY/mm/dd }}</td>
+			<td>{{order._user.first_name}} {{order._user.last_name}}</td>
+			<td>{{order.item.product }}</td>
+			<td>{{order.quantity}}</td>
+			<td>${{order.total}}</td>
+			<td>
+			<form>
+				<select ng-model = 'order.status' ng-change='orderStatus(order)'>
+					{{order.status}}
+					<option>Pending</option>
+					<option>Processed</option>
+					<option>Ready </option>
+					<option>Served</option>
+				</select>
+				<input type='submit' value='save' ng-click='orderStatus(order)'>
+			</form>
+			</td>
+		</tr>
+	</table>
+
+</div>

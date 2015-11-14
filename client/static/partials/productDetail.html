@@ -1,0 +1,264 @@
+<div ng-controller="storeController">
+<style type="text/css">
+body{
+    font-family: 'Roboto Slab', serif;
+    font-size: 20px;
+    background: url(http://www.loafonline.co.uk/wp-content/uploads/2013/07/IMG_6033.jpg);
+    background-size: cover;
+}
+#product{
+    display: inline-block;
+    width:55%;
+}
+#map {
+    height:200px;
+    width:300px;
+}
+#product_info{
+    padding: 0px 50px;
+    
+}
+#product_img{
+    height: 250px;
+    width: 250px;
+    display: inline-block;
+}
+#info{
+    display: inline-block;
+}
+
+#info img{
+    display: inline-block;
+}
+
+#info th{
+    padding-right: 10px;
+}
+
+#info tr{
+    margin-bottom: 5px;
+}
+
+#seller_info{
+    display: inline-block;
+    vertical-align: top;
+}
+#big{
+    display: inline-block;
+    background: white;
+    opacity: 0.8;
+    border-radius: 10px;
+    width: 95%;
+    padding: 20px ;
+}
+
+#map{
+    display: inline-block;
+    margin: 10px;
+    margin-left: 80px;
+}
+#map_container{
+   /* margin-left: 50px;*/
+    background: white;
+    opacity: 0.8;
+    border-radius: 10px;
+    width: 95%;
+    padding: 20px ;
+    margin-top: 10px;
+}
+
+form{
+    display: inline-block;
+    vertical-align: top;
+    color: black;
+    background: white;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 5px;
+
+}
+input, textarea{
+    display: block;
+    color: black;
+}   
+a{
+    font-size: 14px;
+    color: skyblue;
+}
+a:hover{
+    text-decoration: none;
+}
+#product{
+    margin-bottom: 30px;
+}
+h2{
+    color: white;
+}
+
+#quant{
+    width: 100px;
+}
+
+form input[type='submit']{
+    float: right;
+}
+.input{
+    padding-left: 35px;
+}
+#response{
+    display:inline-block;
+    vertical-align: top;
+    width: 40%;
+    height: 905px;
+    color: black;
+    background: white;
+    opacity: 0.8;
+    border-radius: 10px;
+    padding: 15px;
+    overflow: auto;
+}
+
+#review_form{
+    margin: auto;
+    margin-left: 15px;
+}
+
+.response_entry{
+    margin: 10px;
+    border: 3px solid grey;
+    padding: 10px;
+    padding-bottom: 20px;
+}
+.response_entry p{
+    text-align: center;
+}
+.response_user{
+    float:right;
+    font-size: 90%;
+}
+
+table, td{
+    padding: 10px;
+}
+.tab{
+    float:right;
+}
+</style>
+<div id=product_info>
+    <h2>{{goto_product.product}} | <a ng-href='#buyer'>Bakery</a></h2> 
+    
+    <div id='product'>
+        <div id='big'>
+            <a href ng-click='prodFavorite(goto_product)'>Add to Favorites</a>
+            <br>
+            <img id='product_img' src={{goto_product.url}}>
+
+            <form id='order_form' class='form-horizontal'>
+            <table id='orderinfo'>
+                <tr>
+                    <th>Quantity: </th>
+                    <td class='input'><input type='number' id='quant' ng-model='orderinfo.quantity' min="1"></td>
+                </tr>
+                <tr>
+                    <th>Total ($): </th>
+                    <td class='input'>  {{orderinfo.quantity * goto_product.price | number: 2}}</td>
+                </tr>
+            </table>         
+            Comments:
+            <textarea id='goto_product_comment' ng-model='orderinfo.comment'></textarea>
+            <br>
+            <input type='submit' value='Add to Cart!' ng-click='orderAdd(goto_product,orderinfo)'>
+            </form>
+
+            <div id='info'>
+            <table>
+                <tr>
+                <th valign='top' >Serving: </th><td> {{goto_product.serving}}</td>
+                </tr>
+                <tr>
+                <th valign='top'>Price: </th><td> ${{goto_product.price}}</td>
+                </tr>
+                <tr>
+                <th valign='top'>Description:</th><td> {{goto_product.description}}</td>
+                </tr>
+                <tr>
+                <th valign='top'>Ingredients: </th><td> {{goto_product.ingredients}}</td>
+                </tr>
+
+            </table>
+            </div>
+        </div>
+
+        <div id='map_container'>
+            <div id='seller_info'>
+                <h3>Pick-Up Location </h3>
+                <p>Address: {{goto_product._confectioner.address}}</p>
+                <p>Zipcode: {{goto_product._confectioner.zipcode}}</p>
+            </div>
+             <div id="map"></div>
+        </div>
+    </div>
+    <div id='response'>
+        <div>
+            <a href ng-show='reviews' ng-click='switchDetail()' class='tab'>Reviews</a>
+            <a href ng-show='comments' ng-click='switchDetail()' class='tab'>Comments</a>
+            <h3 ng-show='comments'> Reviews </h3>
+            <h3 ng-show='reviews'> Comments </h3>            
+             <a href ng-show='!reviews' ng-click='formReview()'>{{btn_review}}</a>
+             <a href ng-show='!comments' ng-click='formComment()'>{{btn_comment}}</a>
+        </div>
+       <div id='reviews' ng-show='!reviews'>
+
+        <form id='review_form' ng-show='show_formReview' ng-show='reviews'>
+           <table cellpadding='10'>
+            <tr>
+                <th width='50%'><label class='control-label' for='rating'>Rating <br>(out of 5): </label></th>
+                <td><input type='number' id='rating' ng-model='review.rating' min="0" max="5"></td>
+            </tr>
+            <tr>
+                <th> <label class='control-label' for='text'>Review: </label> </th>
+                <td> <textarea ng-model='review.review' id='text'>How was this item?</textarea></td>
+            </tr>
+            </table>  
+          <input type=submit value='Add Review' ng-click='productReview(goto_product, review)'>
+        </form>
+        <div ng-repeat='review in itemReviews' class='response_entry'>
+            <h4>Rated: {{review.rating}}/5</h4>
+            <p>{{review.review}}</p>
+            <span class='response_user'>{{review._user.first_name}}  {{review._user.last_name}}, {{review.dateCreated | date: "MMM dd, yyyy"}} </span>
+        </div>
+    </div>
+    <div id='comments' ng-show='!comments'>
+       
+        <form id='comment_form' ng-show='show_formComment' ng-show='comments'>
+           <table cellpadding='10'>
+            <tr>
+                <th width='50%'><label class='control-label' for='subject'>Subject</label></th>
+                <td><input type='text' id='subject' ng-model='comment.subject'></td>
+            </tr>
+            <tr>
+                <th> <label class='control-label' for='text'>Comment: </label> </th>
+                <td> <textarea ng-model='comment.comment' id='text'>Questions or Comments?</textarea></td>
+            </tr>
+            </table>  
+          <input type=submit value='Post Comment' ng-click='productComment(goto_product, comment)'>
+        </form>
+        <div ng-repeat='comment in itemComments' class='response_entry'>
+            <h4>{{comment.subject}}</h4>
+            <p>{{comment.comment}}</p>
+            <span class='response_user'>{{comment._user.first_name}}  {{comment._user.last_name}}, {{comment.dateCreated | date: "MMM dd, yyyy"}} </span>
+        </div>
+    </div>
+
+    
+
+
+
+</div>
+
+
+
+
+
+    
+</div>

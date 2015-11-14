@@ -1,0 +1,12 @@
+{
+  "name": "FullMean_QA",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "latest",
+    "express": "~4.2.0",
+    "mongoose": "latest",
+    "path": "^0.11.14",
+    "multer": "0.1.6",
+    "passport": "~0.2.0"
+  }
+}

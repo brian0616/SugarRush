@@ -1,0 +1,154 @@
+<style>
+body {
+  font-family: 'Roboto Slab', serif;
+  background: url(http://www.blogto.com/listings/bakery/upload/2014/07/20140718-home590-09.jpg) no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+}
+#cart {
+  width: 70%;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  opacity: 0.8;
+}
+#order {
+  margin-bottom: 80px;
+}
+
+#orderinfo{
+  display: inline-block;
+  vertical-align: top;
+  float: right;
+}
+#orderinfo td{
+  width: 60px;
+}
+#orderinfo th,td{
+  margin: 2px;
+  padding: 2px;
+  font-size: 14px;
+  text-align: center;
+}
+
+table th{
+  text-align: center;
+}
+
+#quant{
+  width: 50px;
+}
+
+#order_edit{
+  position: absolute;
+  top: 25%;
+}
+
+
+#payment{
+  margin-left: 200px;
+}
+
+h3{
+  margin-bottom: 20px;
+}
+.modal-backdrop {
+  z-index: -1;
+}
+
+</style>
+<div id="cart" ng-controller="storeController">
+
+<div ng-controller='stripeController'>
+<h3>Checkout | <a ng-href='#buyer'>Bakery</a></h3>
+  <h4>Order Information</h4>
+  <div id='order'>
+  <table class="table table-striped">
+    <col width='35%'>
+    <col width='8%'>
+    <col width='7%'>
+    <col width='40%'>
+    <col width='10%'>
+    <tr>
+    <theader>
+        <th>Item</th>
+        <th>Total ($)</th>
+        <th>Quantity</th>
+        <th>Comments</th>
+        <th>Action</th>
+    </theader>
+    </tr>
+    <tr class='item_order' ng-repeat="order in cart.orders">
+      <td><a ng-href='#/productDetail/{{order.item._id}}'>{{order.item.product}}</a></td>
+      <td>{{order.info.quantity * order.item.price}}</td>
+      <td>{{order.info.quantity}}</td>
+      <td>{{order.info.comment}}</td>
+      <td><a href data-toggle="modal" data-target="#order_edit" ng-click='orderEdit($index, order)'>Edit</a> | <a href ng-click='rmOrder($index)'>Delete</a></td>
+    </tr>
+  </table>
+
+<!--    <button type="submit" ng-click='checkout()'>Submit</button> -->
+  </div>
+  <div id='payment'>
+    <h4>Payment Information</h4>
+    <form stripe-form="stripeCallback" name="checkoutForm">
+      <input ng-model="number" placeholder="Card Number" 
+               payments-format="card" payments-validate="card" name="card" />
+      <input ng-model="expiry" placeholder="Expiration" 
+               payments-format="expiry" payments-validate="expiry"                
+               name="expiry" />
+      <input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc" name="cvc" />
+      <button type="submit" ng-click='checkout()'>Submit</button>
+    </form> 
+  </div>
+
+  <div class="modal fade" id="order_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Order Details</h4>
+          <strong>Item: {{cart.orders[orderIndex].item.product}}</strong>
+        </div>
+        <div class="modal-body">
+            <form id='form_editOrder' class='form-inline'>
+              <!-- <p class='msg_error'>{{error}}</p> -->
+                Comments:<br>
+                <textarea id='order_comment' ng-model='cart.orders[orderIndex].info.comment'></textarea>
+           
+              <table id='orderinfo'>
+                <tr>
+                  <td colspan=2><a href ng-click='rmOrder(orderIndex)'>Delete</td>
+                </tr>
+                <tr>
+                    <th>Quantity: </th>
+                    <td class='input'><input type='number' id='quant' ng-model='cart.orders[orderIndex].info.quantity' min="1"></td>
+                </tr>
+                <tr>
+                    <th>Total ($): </th>
+                    <td class='input'>  {{cart.orders[orderIndex].info.quantity * cart.orders[orderIndex].item.price | number: 2}}</td>
+                </tr>
+              </table>         
+        </div>
+        <div class="modal-footer">
+              <button type="button" class="btnn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" data-backdrop='false' data-dismiss="modal" class="btnn btn-primary" ng-click='orderUpdate(orderIndex)'>Update!</button>
+          </form>
+        </div> 
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+</div>
+
+

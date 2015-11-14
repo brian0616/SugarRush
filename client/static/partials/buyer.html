@@ -1,0 +1,119 @@
+
+<div ng-controller='storeController'>
+<style>
+#welcome{
+    color:#808080;
+}
+body{
+    font-family: 'Roboto Slab', serif;
+    background: url('../../uploads/oreocupcake.jpeg');
+    background-size: cover;
+}
+.item_entry{
+    width: 220px;
+    height: 250px;
+/*    border: 1px solid #337AB7;*/
+    display: inline-block;
+    margin: 15px;
+    background-color: white;
+}
+.products{
+    width: 160px;
+    height: 160px;
+    border: 1px solid white;
+}
+.products p{
+    text-align: left;
+}
+#cart{
+    display: inline-block;
+}
+h2{
+   /* display: inline-block;*/
+    /*margin-left: 200px;*/
+/*    margin: 10px auto;*/
+    text-align: center;
+    color: white;
+}
+/*#buyer_nav_bar{
+    display: inline;
+    background: blue;
+}*/
+#product_container{
+    text-align: center;
+    width: 75%;
+    display: inline-block;
+}
+#favorites{
+    overflow: auto;
+    height: 80%;
+    background: white;
+    margin-top: 20px;
+    opacity: 0.8;
+}
+
+#favorites h3{
+    text-align: center;
+}
+#product_list{
+    padding: 0px 50px;
+    /*background-image: url('../../uploads/oreocupcake.jpeg');*/
+}
+a:hover {
+    text-decoration: none;
+}
+
+a:hover div{
+    width: 220px;
+    height: 250px;
+    background: lightgrey;
+    border: 3px solid #337AB7;
+    color: grey;
+    text-decoration: none;
+}
+/*#search_filter{
+    float:right;
+}*/
+#sidebar{
+    width: 15%;
+    display: inline-block;
+    height: 80%;    
+    vertical-align: top;
+}
+</style>
+<div id="product_list">
+    <div id='buyer_nav_bar'>
+        <h1 id='welcome'> Welcome, {{user.first_name}} {{user.last_name}}</h1>
+    <h2>Products</h2>     
+<!--         <a id='cart' href='#checkout'>Cart</a> -->
+    </div>
+
+    <div id='product_container'>
+
+        <div class='item_entry' ng-repeat="product in products | filter: filter_name | orderBy:'price' ">
+            <a ng-href='#/productDetail/{{product._id}}'>
+            <div class='item_info'>
+            <h4>{{product.product}} </h4>
+            <img class='products' src='{{product.url}}'>
+            <p>Price: ${{product.price}} <br> Serving: {{product.serving}}</p>
+            </div>
+            </a>
+        </div>
+    </div>
+    <div id='sidebar'>
+        <div id='search_filter'>
+        Search Items: <input type='text' ng-model=  'filter_name'>
+        </div>
+        <div id='favorites'>
+        <h3>Favorites</h3>
+          <ul>
+            <li ng-repeat='item in favorites | filter: filter_name'>
+            <a ng-href='#/productDetail/{{item._id}}'>{{item.product}}</a>
+            </li>
+         </ul>
+        </div>
+    </div>
+
+</div>
+
+

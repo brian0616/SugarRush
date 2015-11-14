@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app='myApp'>
+<head>
+	<title>sweets</title>
+<!-- 	// <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script> -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+	<!-- cookies -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-cookies.js"></script>
+	<!-- cookies -->
+<!-- 	// <script src="http://code.angularjs.org/1.0.0rc10/angular-cookies-1.0.0rc10.js"></script> -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="static/css/style.css">
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+	<script src='angular-payments.js'></script>
+	<script type="text/javascript" src='script.js'></script>
+	<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"> </script>
+	<script src='./static/factory/factory.js'></script>
+	<script src='./static/controllers/productsController.js'></script>
+	<script src='./static/controllers/usersController.js'></script>
+	<script src='./static/controllers/storeController.js'></script>
+	<script src='./static/controllers/stripeController.js'></script>
+	<script src='./static/controllers/logout.js'></script>
+	<script src='./static/controllers/tabs.js'></script>
+	<script src='./static/controllers/tabset.js'></script>
+	<style type="text/css">
+	#user_account {
+		float: right;
+		margin-top: 10px;
+	}
+	#user_account a{
+		color: skyblue;
+	}
+	#user_account a:hover{
+		color: lightgrey;
+		text-decoration: none;
+	}
+	a:hover {
+    text-decoration: none;
+	}
+	</style>
+
+</head>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#/">Sugar Rush</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href='#joinTeam'>Become a Patissier <span class="sr-only">(current)</span></a></li>
+        <li><a href='#faq'>FAQ</a></li>
+      </ul>
+     <div id='logout' ng-controller='usersController'>
+    <!--   	<user-logout></user-logout> -->
+     <div id='user_account' ng-show="accountUser()" >
+     <a href='#/buyer'>Bakery</a> |   
+     <a href='#/checkout'>Shopping Cart </a>  |   
+     <a href='#/account'>Your Account </a>  |  
+     <a href ng-click='userLogout()'> Logout  </a> 
+  	  </div>
+
+  	 <div id='user_account' ng-show="accountChef()">
+     <a href='#/seller'>Order Tickets </a> | 
+     <a href >Your Account </a> |
+     <a href ng-click='userLogout()'> Logout </a>
+  	 </div>
+
+  	</div>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<body>
+<div ng-view></div>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
